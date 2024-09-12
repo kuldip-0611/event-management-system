@@ -1,0 +1,81 @@
+.login-form-container {
+  margin-top: 35px;
+  padding: 0px !important;
+  max-width: 400px !important;
+}
+.form-labels {
+  font-size: 14px;
+  font-weight: 600;
+  padding-bottom: 5px !important;
+  color: #2e2a40;
+}
+.sign-in-btn {
+  background-color: #fbb1b6 !important;
+  padding: 20px;
+  height: 60px !important;
+  margin-top: 40px;
+  border: none !important;
+}
+.adding-button {
+  width: 30%;
+  @media (max-width: 400px) {
+    width: 50% !important;
+  }
+}
+.submit-btn-text {
+  font-size: 18px;
+  color: white;
+  font-weight: 700;
+}
+.eye-button {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  transform: translateY(-50%);
+}
+.error-occurred {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  transform: translateY(-50%);
+}
+.custom-input {
+  background-color: #e7e7e7 !important;
+  height: 60px !important;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.custom-input ::placeholder {
+  color: #f6f6f6 !important;
+  font-size: 16px;
+}
+.password-field-input {
+  position: relative;
+}
+.sign-in-btn-invalid-btn {
+  background-color: #d7d7d7 !important;
+  padding: 20px;
+  height: 60px !important;
+  margin-top: 40px;
+  border: none !important;
+}
+
+.eye-icon {
+  color: gray;
+}
+.custom-input:focus {
+  box-shadow: none !important;
+  border: none !important;
+}
+.is-invalid {
+  background-image: none !important;
+}
+
+.error-text-show {
+  color: #dc3545;
+  font-size: 14px;
+  font-weight: 400;
+}
+.error {
+  border-color: #dc3545 !important;
+}
