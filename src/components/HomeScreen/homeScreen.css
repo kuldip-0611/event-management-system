@@ -1,0 +1,72 @@
+.management-text {
+  color: #dad9e2;
+  font-weight: 600;
+  font-size: 40px;
+  padding-right: 16px !important;
+}
+.management-text.active {
+  color: #000000;
+  font-weight: 600;
+  font-size: 40px;
+  padding-right: 16px;
+}
+.create-event-btn {
+  background-color: #f9959c !important;
+  border-radius: 8px !important;
+}
+.create-event-btn-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  padding: 12px !important;
+}
+.download-excel-btn {
+  border: 1px solid #f9959c !important;
+  border-radius: 8px !important;
+}
+.download-excel-btn-text {
+  color: #f9959c;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px !important;
+}
+.table-head-text {
+  color: #db545d !important;
+  font-size: 16px;
+  font-weight: 600;
+}
+.event-name-text {
+  font-weight: 500;
+  font-size: 16px;
+  color: #000 !important;
+}
+.no-borders-table {
+  border-collapse: collapse;
+}
+
+.no-borders-table th,
+.no-borders-table td {
+  border: none !important;
+  padding: 15px;
+}
+
+.no-borders-table th {
+  font-weight: bold;
+}
+
+.no-borders-table tbody tr {
+  border-bottom: none;
+}
+.events-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin-right: 16px !important;
+}
+.events-text-active {
+  font-size: 18px;
+  font-weight: 600;
+  color: #db545d;
+  margin-right: 16px !important;
+  border-bottom: 2px solid #db545d;
+}

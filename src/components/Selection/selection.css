@@ -1,0 +1,18 @@
+.selection-btn-active {
+  border: 1px solid #f9959c !important;
+  padding: 16px 32px !important;
+}
+.selection-btn-text-active {
+  color: #f9959c;
+  font-size: 14px;
+  font-weight: 600;
+}
+.selection-btn {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  padding: 16px 32px !important;
+}
+.selection-btn-text {
+  color: rgba(80, 77, 77, 0.25);
+  font-size: 14px;
+  font-weight: 600;
+}

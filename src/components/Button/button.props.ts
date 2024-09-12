@@ -1,6 +1,6 @@
 export interface ButtonProps {
-  isSubmitting: boolean
+  isSubmitting?: boolean
   buttonText: string
-  isValid: boolean
+  isValid?: boolean
   isCurvedButton?: boolean
 }

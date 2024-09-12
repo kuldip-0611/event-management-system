@@ -6,10 +6,11 @@ import store, {persistor} from './store'
 import './languages/i18n'
 import './App.css'
 import Loader from './components/Loader/Loader'
-import LoginScreen from './components/LoginScreen'
 import {Toaster} from 'react-hot-toast'
+import Router from './routes'
 
 function App() {
+  console.log('hello')
   return (
     <div className="data-theme">
       <ReduxProvider store={store}>
@@ -17,7 +18,7 @@ function App() {
           <Suspense fallback={<Loader />}>
             <BrowserRouter>
               <Toaster />
-              <LoginScreen />
+              <Router />
             </BrowserRouter>
           </Suspense>
         </PersistGate>

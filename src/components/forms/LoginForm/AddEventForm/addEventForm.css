@@ -1,0 +1,41 @@
+.arrow-down-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 1rem;
+  height: auto;
+}
+.custom-select-container {
+  position: relative;
+}
+.custo-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #a5a5a5;
+}
+.form-check-input:checked {
+  background-color: #db545d !important;
+  border-color: #db545d !important;
+}
+.custom-date-select-container {
+  position: relative;
+  border: 1px solid #acacac;
+  padding: 12px;
+  border-radius: 8px;
+  width: 49%;
+}
+.custom-time-select-container {
+  position: relative;
+  border: 1px solid #acacac;
+  border-radius: 8px;
+  width: 100%;
+  padding: 12px;
+}
+
+.horizontal-line {
+  height: 2px;
+  width: 20%;
+  background-color: 1px solid #acacac;
+}
