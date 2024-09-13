@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Form, Container} from 'react-bootstrap'
 import {useTranslation} from 'react-i18next'
 import {Formik} from 'formik'
@@ -20,7 +20,6 @@ import Free from '../../../../assets/icons/Free'
 import Date from '../../../../assets/icons/Date'
 
 const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) => {
-  const [eventFormat, setEventFormat] = useState(1)
   const [selectedEvent, setSelectedEvent] = useState(1)
   const [selectedPaymentType, setSelectedPaymentType] = useState(1)
   const [selectedHours, setSelectedHours] = useState(1)
@@ -40,25 +39,25 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
   }
   const initialValues = {
     eventName: '',
-    eventType: 'conference',
-    eventStatus: 'upcoming',
-    gender: 'female',
-    ageGroup: '18-25',
-    court: 'court 1',
-    participants: '',
-    paymentStatus: 'Pending',
+    eventType: '',
+    eventStatus: '',
+    gender: '',
+    ageGroup: [],
+    court: '',
+    participants: undefined,
+    paymentStatus: '',
     amount: '',
     averagePayment: '',
-    food: 'Online',
+    food: '',
     description: '',
-    hours: '1-2',
+    hours: '',
     contactPerson: '',
     contactNumber: '',
     contactEmail: '',
     foundLead: '',
     surveyQuestion: '',
     remark: '',
-    noOfWrokers: '',
+    noOfWorkers: [],
   }
   const eventTypeData = [
     {
@@ -121,18 +120,37 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
         onSubmit={(values, {setSubmitting}) => {
           handleAddEvent({
             ...values,
-            selectedEvent,
-            selectedPaymentType,
-            startDate,
-            fromTime,
-            toTime,
-            selectedHours,
+            selectedEvent: eventTypeData?.filter((item) => item.id === selectedEvent)[0]?.title,
+            selectedPaymentType: paymentType?.filter((item) => item.id === selectedPaymentType)[0]
+              ?.title,
+            startDate: startDate,
+            fromTime: fromTime,
+            toTime: toTime,
+            selectedHours: hours?.filter((item) => item.id === selectedHours)[0]?.title,
           })
           setSubmitting(false)
         }}
       >
-        {({handleSubmit, handleChange, values, errors, touched, isValid}) => {
+        {({handleSubmit, handleChange, values, errors, touched, isValid, setFieldValue}) => {
           const isFormValid = Object.values(values).every((value) => Boolean(value)) && isValid
+          const handleMultipleChange = (event: any) => {
+            const {name, value, options} = event.target
+
+            if (name === 'ageGroup' || name === 'food' || name === 'court') {
+              const selectedOptions = Array.from(options)
+                .filter((option) => (option as HTMLOptionElement).selected)
+                .map((option) => (option as HTMLOptionElement).value)
+
+              setFieldValue(name, selectedOptions)
+            } else {
+              setFieldValue(name, value)
+            }
+          }
+          const handleWorkerChange = (e: any, index: number, court: string) => {
+            const updatedWorkers: string[] = [...(values.noOfWorkers || [])] // Ensure it's an array of strings
+            updatedWorkers[index] = e.target.value
+            setFieldValue('noOfWorkers', updatedWorkers)
+          }
 
           return (
             <Form onSubmit={handleSubmit} className="w-100">
@@ -152,7 +170,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                 </Form.Control.Feedback>
               </Form.Group>
               <Spacer size={8} />
-              <Form.Label className="custo-label">{t('eventType')}</Form.Label>
+              <Form.Label className="custo-label">{t('Event format')}</Form.Label>
               <br />
               <Selection
                 data={eventTypeData}
@@ -172,8 +190,11 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       isInvalid={!!errors.eventType && touched.eventType}
                       className="custom-input"
                     >
-                      <option value="conference">Private</option>
-                      <option value="workshop">Public</option>
+                      <option value="" disabled className="dropdown-placeholder">
+                        {t('selectEventType')}
+                      </option>
+                      <option value="Private">Private</option>
+                      <option value="Public">Public</option>
                     </Form.Control>
                     <div className="arrow-down-icon">
                       <ArrowDown />
@@ -196,8 +217,11 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       isInvalid={!!errors.eventStatus && touched.eventStatus}
                       className="custom-input"
                     >
-                      <option value="upcoming">Contract</option>
-                      <option value="ongoing">Out of Contract</option>
+                      <option value="" disabled className="dropdown-placeholder">
+                        {t('selectSventStatus')}
+                      </option>
+                      <option value="Contract">Contract</option>
+                      <option value="Out of Contract">Out of Contract</option>
                     </Form.Control>
                     <div className="arrow-down-icon">
                       <ArrowDown />
@@ -275,6 +299,9 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       isInvalid={!!errors.gender && touched.gender}
                       className="custom-input"
                     >
+                      <option value="" disabled className="dropdown-placeholder">
+                        {t('selectGender')}
+                      </option>
                       <option value="female">Female</option>
                       <option value="male">Male</option>
                       <option value="other">Other</option>
@@ -296,14 +323,20 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       as="select"
                       name="ageGroup"
                       value={values.ageGroup}
-                      onChange={handleChange}
-                      isInvalid={!!errors.ageGroup && touched.ageGroup}
+                      onChange={(e) => handleMultipleChange(e)}
+                      isInvalid={
+                        !!(errors.ageGroup && errors.ageGroup.length > 0 && touched.ageGroup)
+                      }
                       className="custom-input"
+                      multiple
                     >
-                      <option value="18-25">18-20</option>
-                      <option value="26-35">16-18</option>
-                      <option value="36-45">20-40</option>
-                      <option value="46+">40+</option>
+                      <option value="" disabled className="dropdown-placeholder">
+                        {t('selectAgeGroup')}
+                      </option>
+                      <option value="18-20">18-20</option>
+                      <option value="16-18">16-18</option>
+                      <option value="20-40">20-40</option>
+                      <option value="40+">40+</option>
                     </Form.Control>
                     <div className="arrow-down-icon">
                       <ArrowDown />
@@ -325,14 +358,14 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       placeholder={`${t('codeEg')}`}
                       value={values.participants}
                       onChange={(e) => {
-                        handleChange(e)
+                        const inputValue = e.target.value
+                        if (/^\d*$/.test(inputValue)) {
+                          setFieldValue('participants', inputValue)
+                        }
                       }}
-                      isInvalid={!!errors.court && touched.court}
+                      isInvalid={!!errors.participants && touched.participants}
                       className={`custom-input`}
                     />
-                    <div className="arrow-down-icon">
-                      <ArrowDown />
-                    </div>
                   </div>
                   <Form.Control.Feedback type="invalid">
                     {`${t('gender')} ${t(errors?.gender || '')}`}
@@ -347,14 +380,18 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       as="select"
                       name="court"
                       value={values.court}
-                      onChange={handleChange}
+                      onChange={(e) => handleMultipleChange(e)}
                       isInvalid={!!errors.court && touched.court}
                       className="custom-input"
+                      multiple
                     >
-                      <option value="18-25">court 1</option>
-                      <option value="26-35">court 2</option>
-                      <option value="36-45">court 3</option>
-                      <option value="46+">court 4</option>
+                      <option value="" disabled className="dropdown-placeholder">
+                        {t('selectCourt')}
+                      </option>
+                      <option value="court 1">court 1</option>
+                      <option value="court 2">court 2</option>
+                      <option value="court 3">court 3</option>
+                      <option value="court 4">court 4</option>
                     </Form.Control>
                     <div className="arrow-down-icon">
                       <ArrowDown />
@@ -366,26 +403,33 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                   <Spacer size={12} />
                 </Form.Group>
               </div>
-              {values?.court && (
-                <Form.Group controlId="formBasicEventName" className="w-100 custom-form-group">
-                  <Form.Label className="custo-label">{t('noOfWrokers')}</Form.Label>
-                  <div className="custom-input-container d-flex flex-row justify-content-start align-items-center">
-                    <Form.Control
-                      type="text"
-                      name="noOfWrokers"
-                      placeholder={t('noOfWrokers')}
-                      value={values.noOfWrokers}
-                      onChange={handleChange}
-                      isInvalid={!!errors.noOfWrokers && touched.noOfWrokers}
-                      className="custom-input"
-                    />
-                    <p className="court-name">{values.court}</p>
-                  </div>
-                  <Form.Control.Feedback type="invalid">
-                    {`${t('noOfWrokers')} ${t(errors?.noOfWrokers || '')}`}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              )}
+              {Array.isArray(values.court) &&
+                values?.court?.length > 0 &&
+                values.court.map((court, index) => (
+                  <Form.Group
+                    key={index}
+                    controlId={`formBasicEventName_${index}`}
+                    className="w-100 custom-form-group"
+                  >
+                    <Form.Label className="custo-label">{t('noOfWorkers')}</Form.Label>
+                    <div className="custom-input-container d-flex flex-row justify-content-start align-items-center">
+                      <Form.Control
+                        type="text"
+                        name={`noOfWorkers_${index}`}
+                        placeholder={t('noOfWorkers')}
+                        value={values.noOfWorkers[index]}
+                        onChange={(e) => handleWorkerChange(e, index, court)}
+                        isInvalid={!!errors.noOfWorkers?.[index] && touched.noOfWorkers?.[index]} // Validate specific field
+                        className="custom-input"
+                      />
+                      <p className="court-name">{court}</p>
+                    </div>
+                    <Form.Control.Feedback type="invalid">
+                      {`${t('noOfWorkers')} ${t(errors?.noOfWorkers?.[index] || '')}`}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                ))}
+
               <Form.Label className="custo-label">{t('payment')}</Form.Label>
               <br />
               <Selection
@@ -405,8 +449,11 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                     isInvalid={!!errors.paymentStatus && touched.paymentStatus}
                     className="custom-input"
                   >
-                    <option value="18-25">Paid</option>
-                    <option value="26-35">Uncompleted</option>
+                    <option value="" disabled className="dropdown-placeholder">
+                      {t('selectPaymentStatus')}
+                    </option>
+                    <option value="Paid">Paid</option>
+                    <option value="Uncompleted">Uncompleted</option>
                   </Form.Control>
                   <div className="arrow-down-icon">
                     <ArrowDown />
@@ -425,7 +472,12 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                     name="amount"
                     placeholder={t('amount')}
                     value={values.amount}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      const inputValue = e.target.value
+                      if (/^\d*$/.test(inputValue)) {
+                        setFieldValue('amount', inputValue)
+                      }
+                    }}
                     isInvalid={!!errors.amount && touched.amount}
                     className="custom-input"
                   />
@@ -439,8 +491,13 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                     type="text"
                     name="averagePayment"
                     placeholder={t('averagePayment')}
-                    value={values.amount}
-                    onChange={handleChange}
+                    value={values.averagePayment}
+                    onChange={(e) => {
+                      const inputValue = e.target.value
+                      if (/^\d*$/.test(inputValue)) {
+                        setFieldValue('averagePayment', inputValue)
+                      }
+                    }}
                     isInvalid={!!errors.averagePayment && touched.averagePayment}
                     className="custom-input"
                   />
@@ -456,12 +513,16 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                   as="select"
                   name="food"
                   value={values.food}
-                  onChange={handleChange}
+                  onChange={(e) => handleMultipleChange(e)}
                   isInvalid={!!errors.food && touched.food}
                   className="custom-input"
+                  multiple
                 >
-                  <option value="18-25">Snacks</option>
-                  <option value="26-35">Combo</option>
+                  <option value="" disabled className="dropdown-placeholder">
+                    {t('selectFoodOption')}
+                  </option>
+                  <option value="Snacks">Snacks</option>
+                  <option value="Combo">Combo</option>
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                   {`${t('food')} ${t(errors?.food || '')}`}
@@ -474,7 +535,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                   type="text"
                   name="description"
                   placeholder={t('descriptionEg')}
-                  value={values.amount}
+                  value={values.description}
                   onChange={handleChange}
                   isInvalid={!!errors.description && touched.description}
                   className="custom-input"
@@ -519,8 +580,13 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                         type="text"
                         name="contactNumber"
                         placeholder={t('contactNumber')}
-                        value={values.amount}
-                        onChange={handleChange}
+                        value={values.contactNumber}
+                        onChange={(e) => {
+                          const inputValue = e.target.value
+                          if (/^\d*$/.test(inputValue)) {
+                            setFieldValue('contactNumber', inputValue)
+                          }
+                        }}
                         isInvalid={!!errors.contactNumber && touched.contactNumber}
                         className="custom-input"
                       />
@@ -536,7 +602,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       type="text"
                       name="contactEmail"
                       placeholder={t('contactEmail')}
-                      value={values.amount}
+                      value={values.contactEmail}
                       onChange={handleChange}
                       isInvalid={!!errors.contactEmail && touched.contactEmail}
                       className="custom-input"
@@ -557,8 +623,11 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                         isInvalid={!!errors.foundLead && touched.foundLead}
                         className="custom-input"
                       >
-                        <option value="18-25">LinkedIn</option>
-                        <option value="26-35">Google</option>
+                        <option value="" disabled className="dropdown-placeholder">
+                          {t('selectLead')}
+                        </option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Google">Google</option>
                       </Form.Control>
                       <div className="arrow-down-icon">
                         <ArrowDown />
@@ -587,7 +656,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       type="text"
                       name="surveyQuestion"
                       placeholder={t('surveyQuestion')}
-                      value={values.amount}
+                      value={values.surveyQuestion}
                       onChange={handleChange}
                       isInvalid={!!errors.surveyQuestion && touched.surveyQuestion}
                       className="custom-input"
@@ -603,7 +672,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                       type="text"
                       name="remark"
                       placeholder={t('remark')}
-                      value={values.amount}
+                      value={values.remark}
                       onChange={handleChange}
                       isInvalid={!!errors.remark && touched.remark}
                       className="custom-input"
@@ -615,11 +684,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
                 </>
               )}
 
-              <LoadingButton
-                buttonText={t('addEvent')}
-                isSubmitting={loading}
-                isValid={isFormValid}
-              />
+              <LoadingButton buttonText={t('addEvent')} isSubmitting={loading} isValid={true} />
             </Form>
           )
         }}

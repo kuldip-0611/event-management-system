@@ -5,12 +5,12 @@ export interface Court {
 
 export interface AddEventParams {
   eventName?: string
-  eventFormat?: string
+  eventFormat?: any
   type?: string
   status?: string
   payment?: string
   hours?: string
-  date?: string
+  date?: any
   fromTime?: string
   toTime?: string
   noOfParticipants?: string

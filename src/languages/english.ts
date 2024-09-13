@@ -53,6 +53,15 @@ const english = {
     more: 'More',
     noOfWrokers: 'No. of workers',
     addEvent: 'Add event',
+    selectEventType: 'Select event type',
+    selectSventStatus: 'Select event status',
+    selectGender: 'Select gender',
+    selectAgeGroup: 'Select age group',
+    selectCourt: 'Select court',
+    selectPaymentStatus: 'Select payment status',
+    selectFoodOption: 'Select food',
+    selectLead: 'Select where you found lead',
+    eventAdded: 'Event added successfully',
   },
 }
 export default english
