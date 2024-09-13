@@ -31,7 +31,7 @@ const AddEventScreen = () => {
           eventFormat: values?.selectedEvent,
           eventType: values?.eventType,
           status: values?.eventStatus,
-          date: moment(values?.startDate).format('MMMM Do, YYYY') || undefineds,
+          date: moment(values?.startDate).format('MMMM Do, YYYY') || undefined,
           toTime: values?.toTime || undefined,
           fromTime: values?.fromTime || undefined,
           gender: values?.gender,
