@@ -111,7 +111,12 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
       title: '4+',
     },
   ]
-
+  const handleContainerClick = () => {
+    const datePickerInput = document.querySelector('.date-picker-input') as HTMLInputElement | null
+    if (datePickerInput) {
+      datePickerInput.focus()
+    }
+  }
   return (
     <Container className="m-0 p-0">
       <Formik
@@ -147,7 +152,7 @@ const AddEventForm: React.FC<AddEventFormProps> = ({handleAddEvent, loading}) =>
             }
           }
           const handleWorkerChange = (e: any, index: number, court: string) => {
-            const updatedWorkers: string[] = [...(values.noOfWorkers || [])] // Ensure it's an array of strings
+            const updatedWorkers: string[] = [...(values.noOfWorkers || [])]
             updatedWorkers[index] = e.target.value
             setFieldValue('noOfWorkers', updatedWorkers)
           }

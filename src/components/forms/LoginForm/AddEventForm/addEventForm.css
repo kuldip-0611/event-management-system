@@ -26,12 +26,22 @@
   border-radius: 8px;
   width: 49%;
 }
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+.time-picker:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .custom-time-select-container {
   position: relative;
   border: 1px solid #acacac;
   border-radius: 8px;
   width: 100%;
-  padding: 12px;
+  padding: 12px 0px 12px 12px;
 }
 
 .horizontal-line {
@@ -43,4 +53,54 @@
   color: #bfbfbf !important;
   font-size: 16px;
   font-weight: 500;
+}
+
+.custom-date-select-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 12px 10px;
+  cursor: pointer;
+}
+
+.date-picker-input {
+  font-size: 16px;
+  color: #333;
+  border: none;
+  width: 100%;
+  padding: 8px;
+  outline: none;
+  background-color: transparent;
+  font-weight: 500;
+}
+
+.custom-date-select-container:hover {
+  border-color: #f56289;
+}
+
+.arrow-down-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
+.react-datepicker {
+  border-radius: 10px;
+  border: 2px solid #f78fa7;
+}
+
+.react-datepicker__day--selected {
+  background-color: #f78fa7;
+  color: white;
+  border-radius: 50%;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f56289;
+  border-radius: 50%;
 }
